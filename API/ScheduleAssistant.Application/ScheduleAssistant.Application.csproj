@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.1.2" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ScheduleAssistant.Common\ScheduleAssistant.Common.csproj" />
+    <ProjectReference Include="..\ScheduleAssistant.Communication\ScheduleAssistant.Communication.csproj" />
+    <ProjectReference Include="..\ScheduleAssistant.Data\ScheduleAssistant.Data.csproj" />
+    <ProjectReference Include="..\ScheduleAssistant.Domain\ScheduleAssistant.Domain.csproj" />
+    <ProjectReference Include="..\ScheduleAssistant.Infrastructure\ScheduleAssistant.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

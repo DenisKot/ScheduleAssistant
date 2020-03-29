@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200127101345_Initial.cs" />
+    <Compile Remove="Migrations\20200127101345_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200127142216_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200127142216_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200127142855_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200127142855_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200127143050_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200127143050_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200127152230_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200127152230_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200127153653_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200127153653_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200128090356_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200128090356_InitialCreate.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ScheduleAssistant.Domain\ScheduleAssistant.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
