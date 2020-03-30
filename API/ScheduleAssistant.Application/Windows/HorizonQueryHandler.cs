@@ -13,13 +13,17 @@ namespace ScheduleAssistant.Application.Windows
 {
     public class HorizonQueryHandler : IRequestHandler<HorizonQuery, IEnumerable<WindowDto>>
     {
-        private readonly IRepository<Window> repository;
+        private readonly IRepository<ExpressWindow> expressRepository;
+        private readonly IRepository<UsualWindow> usualRepository;
         private readonly IMappingService mappingService;
 
-        public HorizonQueryHandler(IRepository<Window> repository, IMappingService mappingService)
+        public HorizonQueryHandler(IRepository<ExpressWindow> expressRepository, 
+            IMappingService mappingService,
+            IRepository<UsualWindow> usualRepository)
         {
-            this.repository = repository;
+            this.expressRepository = expressRepository;
             this.mappingService = mappingService;
+            this.usualRepository = usualRepository;
         }
 
         public async Task<IEnumerable<WindowDto>> Handle(HorizonQuery request, CancellationToken cancellationToken)
@@ -32,18 +36,21 @@ namespace ScheduleAssistant.Application.Windows
 
             var endTime = request.CurrentDate.AddDays(request.Horizon + 1);
 
-            var result = await this.repository.GetAllListAsync(
+            var result = await this.usualRepository.GetAllListAsync(
                 w => 
                      w.Start > request.CurrentDate 
                      && w.Finish < endTime 
                      && w.Type == WindowType.UsualDelivery);
 
             // ToDo: clarify business requirements about what one express delivery should be choosed
-            var expressWindow = await this.repository.FirstOrDefaultAsync(w => w.Type == WindowType.ExpressDelivery);
-            var list = new List<Window> { expressWindow };
-            list.AddRange(result);
+            var expressWindow = await this.expressRepository.FirstOrDefaultAsync(w => w.Type == WindowType.ExpressDelivery);
+            var expressWindowDto = this.mappingService.Map<WindowDto>(expressWindow);
+            var resultDto = this.mappingService.Map<IEnumerable<WindowDto>>(result);
+            
+            var list = new List<WindowDto> { expressWindowDto };
+            list.AddRange(resultDto);
 
-            return this.mappingService.Map<IEnumerable<WindowDto>>(list);
+            return list;
         }
     }
 }

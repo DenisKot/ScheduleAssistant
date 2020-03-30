@@ -19,12 +19,12 @@ namespace ScheduleAssistant.UnitTests
     public class HorizonQueryHandlerTest
     {
         private HorizonQueryHandler handler;
-        private Mock<IRepository<Window>> repositoryMock;
+        private Mock<IRepository<ExpressWindow>> repositoryMock;
         private Mock<IMappingService> mappingServiceMock;
 
         public HorizonQueryHandlerTest()
         {
-            this.repositoryMock = new Mock<IRepository<Window>>();
+            this.repositoryMock = new Mock<IRepository<ExpressWindow>>();
             this.mappingServiceMock = new Mock<IMappingService>();
 
             this.handler = new HorizonQueryHandler(this.repositoryMock.Object, this.mappingServiceMock.Object);
@@ -59,41 +59,41 @@ namespace ScheduleAssistant.UnitTests
 
 
         [Test, AutoData]
-        public async Task Handle_WithoutUsualWindows_ReturnsOnlyOneExpressWindow(Window window)
+        public async Task Handle_WithoutUsualWindows_ReturnsOnlyOneExpressWindow(ExpressWindow expressWindow)
         {
             var expectedCount = 1;
             this.repositoryMock
-                .Setup(x => x.GetAllListAsync(It.IsAny<Expression<Func<Window, bool>>>()))
-                .ReturnsAsync(new List<Window>());
+                .Setup(x => x.GetAllListAsync(It.IsAny<Expression<Func<ExpressWindow, bool>>>()))
+                .ReturnsAsync(new List<ExpressWindow>());
             this.repositoryMock
-                .Setup(x => x.FirstOrDefaultAsync(It.IsAny<Expression<Func<Window, bool>>>()))
-                .ReturnsAsync(window);
+                .Setup(x => x.FirstOrDefaultAsync(It.IsAny<Expression<Func<ExpressWindow, bool>>>()))
+                .ReturnsAsync(expressWindow);
             var request = new HorizonQuery { Horizon = 1, CurrentDate = DateTimeOffset.Now };
 
             await this.handler.Handle(request, CancellationToken.None);
 
             this.mappingServiceMock.Verify(x => 
-                x.Map<IEnumerable<WindowDto>>(It.Is<List<Window>>(m => m.Count() == expectedCount)));
+                x.Map<IEnumerable<WindowDto>>(It.Is<List<ExpressWindow>>(m => m.Count() == expectedCount)));
         }
 
         [Test, AutoData]
-        public async Task Handle_WithUsualAndExpressWindows_ReturnsUnion(Window express, Window usual1, Window usual2)
+        public async Task Handle_WithUsualAndExpressWindows_ReturnsUnion(ExpressWindow express, ExpressWindow usual1, ExpressWindow usual2)
         {
-            var usualList = new List<Window> {usual1, usual2};
+            var usualList = new List<ExpressWindow> {usual1, usual2};
             var expressCount = 1;
             var expectedListCount = usualList.Count + expressCount;
             this.repositoryMock
-                .Setup(x => x.GetAllListAsync(It.IsAny<Expression<Func<Window, bool>>>()))
-                .ReturnsAsync(new List<Window> { usual1, usual2 });
+                .Setup(x => x.GetAllListAsync(It.IsAny<Expression<Func<ExpressWindow, bool>>>()))
+                .ReturnsAsync(new List<ExpressWindow> { usual1, usual2 });
             this.repositoryMock
-                .Setup(x => x.FirstOrDefaultAsync(It.IsAny<Expression<Func<Window, bool>>>()))
+                .Setup(x => x.FirstOrDefaultAsync(It.IsAny<Expression<Func<ExpressWindow, bool>>>()))
                 .ReturnsAsync(express);
             var request = new HorizonQuery { Horizon = 1, CurrentDate = DateTimeOffset.Now };
 
             await this.handler.Handle(request, CancellationToken.None);
 
             this.mappingServiceMock.Verify(x =>
-                x.Map<IEnumerable<WindowDto>>(It.Is<List<Window>>(m => m.Count == expectedListCount)));
+                x.Map<IEnumerable<WindowDto>>(It.Is<List<ExpressWindow>>(m => m.Count == expectedListCount)));
         }
     }
 }

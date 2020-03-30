@@ -13,7 +13,7 @@ namespace ScheduleAssistant.Infrastructure
 
         internal static Profile[] GetAutoMapperProfiles()
         {
-            return new Profile[] {new QuestionnairesProfile()};
+            return new Profile[] {new WindowsProfile()};
         }
     }
 }

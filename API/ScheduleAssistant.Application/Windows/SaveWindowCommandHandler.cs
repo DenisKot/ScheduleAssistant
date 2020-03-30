@@ -11,10 +11,10 @@ namespace ScheduleAssistant.Application.Windows
 {
     public class SaveWindowCommandHandler : IRequestHandler<SaveWindowCommand, int>
     {
-        private readonly IRepository<Window> repository;
+        private readonly IRepository<ExpressWindow> repository;
         private readonly IMappingService mappingService;
 
-        public SaveWindowCommandHandler(IRepository<Window> repository, IMappingService mappingService)
+        public SaveWindowCommandHandler(IRepository<ExpressWindow> repository, IMappingService mappingService)
         {
             this.repository = repository;
             this.mappingService = mappingService;
@@ -24,17 +24,17 @@ namespace ScheduleAssistant.Application.Windows
         {
             this.Validate(request.EntityDto);
 
-            Window entity;
+            ExpressWindow entity;
 
             if (request.EntityDto.Id == 0)
             {
-                entity = this.mappingService.Map<Window>(request.EntityDto);
+                entity = this.mappingService.Map<ExpressWindow>(request.EntityDto);
                 await this.repository.InsertAsync(entity);
             }
             else
             {
                 entity = await this.repository.FirstOrDefaultAsync(request.EntityDto.Id);
-                this.mappingService.Map<WindowDto, Window>(request.EntityDto, entity);
+                this.mappingService.Map<WindowDto, ExpressWindow>(request.EntityDto, entity);
                 await this.repository.UpdateAsync(entity);
             }
 

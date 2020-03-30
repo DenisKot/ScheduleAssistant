@@ -6,7 +6,7 @@ namespace ScheduleAssistant.Data.EntityFramework
     {
         public static void ConfigureEf(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Window>().Property(x => x.Name).IsRequired();
+            //modelBuilder.Entity<ExpressWindow>().Property(x => x.Name).IsRequired();
         }
     }
 }

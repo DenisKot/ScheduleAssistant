@@ -4,7 +4,7 @@ using System;
 
 namespace ScheduleAssistant.IntegrationTests.CommandsAndQueries.Questionnaires
 {
-    public class WindowsCommandsTest : BaseCommandTest<Window, WindowDto>
+    public class WindowsCommandsTest : BaseCommandTest<ExpressWindow, WindowDto>
     {
         protected override WindowDto BuildDto()
         {

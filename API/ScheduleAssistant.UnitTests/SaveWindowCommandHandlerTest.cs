@@ -17,12 +17,12 @@ namespace ScheduleAssistant.UnitTests
     public class SaveWindowCommandHandlerTest
     {
         private SaveWindowCommandHandler handler;
-        private Mock<IRepository<Window>> repositoryMock;
+        private Mock<IRepository<ExpressWindow>> repositoryMock;
         private Mock<IMappingService> mappingServiceMock;
 
         public SaveWindowCommandHandlerTest()
         {
-            this.repositoryMock = new Mock<IRepository<Window>>();
+            this.repositoryMock = new Mock<IRepository<ExpressWindow>>();
             this.mappingServiceMock = new Mock<IMappingService>();
 
             this.handler = new SaveWindowCommandHandler(this.repositoryMock.Object, this.mappingServiceMock.Object);
@@ -53,11 +53,11 @@ namespace ScheduleAssistant.UnitTests
         }
 
         [Test, AutoData]
-        public async Task Handle_WithDtoIdZero_InsertsEntity(WindowDto dto, Window entity)
+        public async Task Handle_WithDtoIdZero_InsertsEntity(WindowDto dto, ExpressWindow entity)
         {
             dto.Id = 0;
             dto.Finish = dto.Start.AddHours(2);
-            this.mappingServiceMock.Setup(x => x.Map<Window>(It.IsAny<WindowDto>())).Returns(entity);
+            this.mappingServiceMock.Setup(x => x.Map<ExpressWindow>(It.IsAny<WindowDto>())).Returns(entity);
             var request = new SaveWindowCommand { EntityDto = dto };
 
             var result = await this.handler.Handle(request, CancellationToken.None);
@@ -67,11 +67,11 @@ namespace ScheduleAssistant.UnitTests
         }
 
         [Test, AutoData]
-        public async Task Handle_WithDtoIdZero_ReturnEntityId(WindowDto dto, Window entity)
+        public async Task Handle_WithDtoIdZero_ReturnEntityId(WindowDto dto, ExpressWindow entity)
         {
             dto.Id = 0;
             dto.Finish = dto.Start.AddHours(2);
-            this.mappingServiceMock.Setup(x => x.Map<Window>(It.IsAny<WindowDto>())).Returns(entity);
+            this.mappingServiceMock.Setup(x => x.Map<ExpressWindow>(It.IsAny<WindowDto>())).Returns(entity);
             var request = new SaveWindowCommand { EntityDto = dto };
 
             var result = await this.handler.Handle(request, CancellationToken.None);
@@ -80,7 +80,7 @@ namespace ScheduleAssistant.UnitTests
         }
 
         [Test, AutoData]
-        public async Task Handle_WithDtoIdNotZero_UpdatesEntity(WindowDto dto, Window entity)
+        public async Task Handle_WithDtoIdNotZero_UpdatesEntity(WindowDto dto, ExpressWindow entity)
         {
             dto.Finish = dto.Start.AddHours(2);
             this.repositoryMock.Setup(x =>
@@ -90,7 +90,7 @@ namespace ScheduleAssistant.UnitTests
 
             var result = await this.handler.Handle(request, CancellationToken.None);
 
-            this.mappingServiceMock.Verify(x => x.Map<WindowDto, Window>(dto, entity));
+            this.mappingServiceMock.Verify(x => x.Map<WindowDto, ExpressWindow>(dto, entity));
             this.repositoryMock.Verify(x => x.UpdateAsync(entity));
             this.repositoryMock.Verify(x => x.SaveChangesAsync());
         }

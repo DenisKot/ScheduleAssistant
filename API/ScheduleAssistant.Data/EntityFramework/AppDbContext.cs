@@ -17,6 +17,7 @@ namespace ScheduleAssistant.Data.EntityFramework
             EfConfiguration.ConfigureEf(modelBuilder);
         }
 
-        public virtual DbSet<Window> Windows { get; set; }
+        public virtual DbSet<ExpressWindow> ExpressWindows { get; set; }
+        public virtual DbSet<UsualWindow> UsualWindows { get; set; }
     }
 }
