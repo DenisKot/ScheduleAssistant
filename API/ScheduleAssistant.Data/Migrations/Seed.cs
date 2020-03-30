@@ -17,7 +17,9 @@ namespace ScheduleAssistant.Data.Migrations
                         Description = "Доставка за несколько часов",
                         Price = 99,
                         Type = WindowType.ExpressDelivery,
-                        Available = true
+                        Available = true,
+                        Start = DateTimeOffset.UtcNow,
+                        Finish = DateTimeOffset.UtcNow.AddMonths(1)
                     }
                 );
 

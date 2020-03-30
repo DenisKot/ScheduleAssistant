@@ -32,15 +32,22 @@ namespace ScheduleAssistant.Application.Windows
 
             var endTime = request.CurrentDate.AddDays(request.Horizon + 1);
 
-            var result = await this.repository.GetAllListAsync(
-                w => 
+            var result = await this.repository.GetAllListAsync(w => 
                      w.Start > request.CurrentDate 
                      && w.Finish < endTime 
                      && w.Type == WindowType.UsualDelivery);
 
-            // ToDo: clarify business requirements about what one express delivery should be choosed
-            var expressWindow = await this.repository.FirstOrDefaultAsync(w => w.Type == WindowType.ExpressDelivery);
-            var list = new List<Window> { expressWindow };
+            // ToDo: clarify business requirements about what one express delivery should be chose
+            var expressWindow = await this.repository.FirstOrDefaultAsync(w =>
+                w.Start < request.CurrentDate
+                && w.Finish > request.CurrentDate
+                && w.Type == WindowType.ExpressDelivery);
+
+            var list = new List<Window>();
+            
+            if(expressWindow != null)
+                list.Add(expressWindow);
+            
             list.AddRange(result);
 
             return this.mappingService.Map<IEnumerable<WindowDto>>(list);
